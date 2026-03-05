@@ -1,0 +1,299 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "moonish889/mbtc"
+
+// Values
+pub fn codegen(AST) -> Bytes
+
+pub fn compile_file(String, String) -> Result[Unit, String]
+
+pub fn parse(Array[Token]) -> AST
+
+pub fn tokenize(String) -> Array[Token]
+
+// Errors
+
+// Types and methods
+pub enum AST {
+  Unit
+  Int(Int)
+  Float(Double)
+  String(String)
+  Char(Char)
+  Bool(Bool)
+  Ident(String)
+  Block(Array[AST])
+  Func(String, Array[(String, AST?)], AST?, AST)
+  LetBind(String, AST?, AST, AST)
+  LetTuple(Array[String], AST, AST)
+  IfExpr(AST, AST, AST?)
+  MatchExpr(AST, Array[(AST, AST)])
+  WhileLoop(AST, AST)
+  ForLoop(AST?, AST?, AST?, AST)
+  ForInLoop(String, AST, AST)
+  ReturnExpr(AST)
+  Break
+  Continue
+  Binary(String, AST, AST)
+  Unary(String, AST)
+  CallExpr(AST, Array[AST])
+  IndexExpr(AST, AST)
+  FieldExpr(AST, String)
+  Tuple(Array[AST])
+  ArrayLit(Array[AST])
+  MapLit(Array[(AST, AST)])
+  Assign(AST, AST)
+  AssignOp(String, AST, AST)
+  TypeDecl(String, Array[(String, String)])
+  EnumDef(String, Array[String])
+  StructLit(String, Array[(String, AST)])
+  StructUpdate(AST, Array[(String, AST)])
+  StringConcat(Array[AST])
+  Spread(AST)
+  TestBlock(String?, AST)
+}
+pub impl Show for AST
+
+pub struct CodeGen {
+  code : Array[Byte]
+  labels : Map[String, Int]
+  pending_labels : Array[(String, Int)]
+  label_counter : Int
+  var_offsets : Map[String, Int]
+  var_is_float : Map[String, Bool]
+  var_is_string : Map[String, Bool]
+  var_is_char : Map[String, Bool]
+  var_is_bool : Map[String, Bool]
+  var_is_tuple : Map[String, Bool]
+  var_is_map : Map[String, Bool]
+  var_tuple_field_types : Map[String, Array[Bool]]
+  var_tuple_field_is_array : Map[String, Array[Bool]]
+  var_tuple_field_is_bool : Map[String, Array[Bool]]
+  var_tuple_field_float_values : Map[String, Array[Double]]
+  var_tuple_field_bool_values : Map[String, Array[Bool]]
+  var_tuple_field_array_values : Map[String, Array[Array[Int]]]
+  var_array_len : Map[String, Int]
+  var_types : Map[String, String]
+  var_struct_fields : Map[String, Array[String]]
+  enum_discriminants : Map[String, Int]
+  next_offset : Int
+  current_func : String?
+  func_bodies : Map[String, AST]
+  strings : Array[String]
+  string_counter : Int
+  floats : Array[Double]
+  float_counter : Int
+  loop_labels : Array[(String, String)]
+  struct_fields : Map[String, Array[String]]
+  needs_input_buf : Bool
+  needs_int_buf : Bool
+  needs_strcat_buf : Bool
+  needs_flt_buf : Bool
+  needs_arrcat_buf : Bool
+  needs_map_buf : Bool
+  map_buf_offset : Int
+  enum_buf_offset : Int
+}
+
+pub struct Lexer {
+  input : String
+  pos : Int
+  line : Int
+  column : Int
+}
+pub fn Lexer::new(String) -> Self
+pub fn Lexer::next_token(Self) -> (Token, Self)
+
+pub enum Operand {
+  Imm(Int)
+  Reg(String)
+  Stack(Int)
+  Label(String)
+  LabelAddr(String)
+}
+pub impl Show for Operand
+
+pub struct Parser {
+  tokens : Array[Token]
+  pos : Int
+}
+pub fn Parser::new(Array[Token]) -> Self
+pub fn Parser::parse(Self) -> AST
+
+pub enum Token {
+  Fn
+  Let
+  Mut
+  If
+  Else
+  Match
+  Case
+  While
+  For
+  In
+  Break
+  Continue
+  Return
+  True
+  False
+  Unit
+  Self
+  Type
+  Struct
+  Enum
+  Test
+  Interface
+  Impl
+  Pub
+  Priv
+  Override
+  Static
+  Virtual
+  Abstract
+  Underscore
+  Ident(String)
+  Int(Int)
+  UInt(UInt)
+  Float(Double)
+  String(String)
+  Char(Char)
+  Plus
+  Minus
+  Star
+  Slash
+  Percent
+  Ampersand
+  Pipe
+  Caret
+  Tilde
+  Bang
+  Question
+  Colon
+  ColonColon
+  Dot
+  DotDot
+  DotDotDot
+  Comma
+  Semicolon
+  Equal
+  PlusEqual
+  MinusEqual
+  StarEqual
+  SlashEqual
+  PercentEqual
+  AmpersandEqual
+  PipeEqual
+  CaretEqual
+  TildeEqual
+  QuestionEqual
+  EqEq
+  BangEqual
+  Lt
+  LtEqual
+  Gt
+  GtEqual
+  AmpersandAmpersand
+  PipePipe
+  LtLt
+  GtGt
+  LParen
+  RParen
+  LBracket
+  RBracket
+  LBrace
+  RBrace
+  InterpolateStart
+  InterpolateEnd
+  Arrow
+  At
+  Eof
+}
+pub impl Show for Token
+
+pub enum X86Inst {
+  Mov(X86Operand, X86Operand)
+  Movzx(X86Operand, X86Operand)
+  Push(X86Operand)
+  Pop(X86Operand)
+  Add(X86Operand, X86Operand)
+  Sub(X86Operand, X86Operand)
+  Imul(X86Operand, X86Operand)
+  Idiv(X86Operand)
+  Cmp(X86Operand, X86Operand)
+  Test(X86Operand, X86Operand)
+  And(X86Operand, X86Operand)
+  Or(X86Operand, X86Operand)
+  Xor(X86Operand, X86Operand)
+  Not(X86Operand)
+  Neg(X86Operand)
+  Inc(X86Operand)
+  Dec(X86Operand)
+  Cqo
+  Shl(X86Operand, X86Operand)
+  Shr(X86Operand, X86Operand)
+  Sar(X86Operand, X86Operand)
+  Jmp(String)
+  Je(String)
+  Jne(String)
+  Jg(String)
+  Jge(String)
+  Jl(String)
+  Jle(String)
+  Ja(String)
+  Jae(String)
+  Jb(String)
+  Jbe(String)
+  Jz(String)
+  Jnz(String)
+  Jp(String)
+  Setz(X86Operand)
+  Setnz(X86Operand)
+  Setg(X86Operand)
+  Setge(X86Operand)
+  Setl(X86Operand)
+  Setle(X86Operand)
+  Seta(X86Operand)
+  Setae(X86Operand)
+  Setb(X86Operand)
+  Setbe(X86Operand)
+  PushXmm(String)
+  PopXmm(String)
+  Call(String)
+  Ret
+  Nop
+  Syscall
+  Lea(X86Operand, X86Operand)
+  Movsd(X86Operand, X86Operand)
+  Addsd(X86Operand, X86Operand)
+  Subsd(X86Operand, X86Operand)
+  Mulsd(X86Operand, X86Operand)
+  Divsd(X86Operand, X86Operand)
+  Ucomisd(X86Operand, X86Operand)
+  Cvtsi2sd(X86Operand, X86Operand)
+  Cvttsd2si(X86Operand, X86Operand)
+  RepMovsq
+}
+pub impl Show for X86Inst
+
+pub enum X86Operand {
+  Imm8(Int)
+  Imm32(Int)
+  Imm64(Int)
+  Reg8(String)
+  Reg32(String)
+  Reg64(String)
+  Xmm(String)
+  Stack8(Int)
+  Stack32(Int)
+  Stack64(Int)
+  StackBP64(Int)
+  RipRel32(String)
+  Label(String)
+  MemIndirect(String)
+  MemOffset(String, Int)
+}
+pub impl Show for X86Operand
+
+// Type aliases
+
+// Traits
+

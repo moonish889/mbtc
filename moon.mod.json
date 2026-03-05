@@ -1,0 +1,17 @@
+{
+  "name": "moonish889/mbtc",
+  "version": "0.1.0",
+  "deps": {
+    "moonbitlang/x": "0.4.40",
+    "moonbitlang/async": "0.16.6"
+  },
+  "readme": "README.mbt.md",
+  "repository": "",
+  "license": "Apache-2.0",
+  "keywords": [],
+  "description": "",
+  "import": [
+    "moonbitlang/x",
+    "moonbitlang/core"
+  ]
+}
